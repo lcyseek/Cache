@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 /**
  * Created by luchunyang on 16/6/5.
+ *
  */
 public class ImageAdapter extends BaseAdapter implements OnScrollListener {
 
@@ -78,14 +79,13 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView mImageView;
         final String mImageUrl = imageThumbUrls[position];
-        System.out.println("url--->"+mImageUrl);
         if(convertView == null){
             mImageView = new ImageView(context);
         }else{
             mImageView = (ImageView) convertView;
         }
 
-        mImageView.setLayoutParams(new GridView.LayoutParams(150, 150));
+        mImageView.setLayoutParams(new GridView.LayoutParams(250, 250));
         mImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
         //给ImageView设置Tag,这里已经是司空见惯了
@@ -93,12 +93,12 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener {
 
 
         /*******************************去掉下面这几行试试是什么效果****************************/
-        Bitmap bitmap = mImageDownLoader.showCacheBitmap(mImageUrl.replaceAll("[^\\w]", ""));
-        if(bitmap != null){
-            mImageView.setImageBitmap(bitmap);
-        }else{
-            mImageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.qinyumo));
-        }
+//        Bitmap bitmap = mImageDownLoader.showCacheBitmap(mImageUrl.replaceAll("[^\\w]", ""));
+//        if(bitmap != null){
+//            mImageView.setImageBitmap(bitmap);
+//        }else{
+//            mImageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.qinyumo));
+//        }
         /**********************************************************************************/
 
 
@@ -108,6 +108,7 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener {
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         //仅当GridView静止时才去下载图片，GridView滑动时取消所有正在下载的任务
+        System.out.println("onScrollStateChanged");
         if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
             showImage(mFirstVisibleItem,mVisibleItemCount);
         }else{
@@ -120,6 +121,7 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener {
      */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        System.out.println("onScroll");
         mFirstVisibleItem = firstVisibleItem;
         mVisibleItemCount = visibleItemCount;
         // 因此在这里为首次进入程序开启下载任务。

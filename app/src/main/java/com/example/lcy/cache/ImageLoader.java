@@ -9,6 +9,7 @@ import android.support.v4.util.LruCache;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,6 +31,7 @@ public class ImageLoader {
         this.context = context;
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int mCacheSize = maxMemory/8;
+        LinkedHashMap<String,String>s;
 
         lruCache = new LruCache<String, Bitmap>(mCacheSize){
 
@@ -37,6 +39,11 @@ public class ImageLoader {
             @Override
             protected int sizeOf(String key, Bitmap value) {
                 return value.getRowBytes()*value.getHeight();
+            }
+
+            @Override
+            protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
+                super.entryRemoved(evicted, key, oldValue, newValue);
             }
         };
 
@@ -117,10 +124,8 @@ public class ImageLoader {
             con.setConnectTimeout(10 * 1000);
             con.setReadTimeout(10 * 1000);
             con.setDoInput(true);
-            //con.setDoOutput(true);
             bitmap = BitmapFactory.decodeStream(con.getInputStream());
         } catch (Exception e) {
-            System.out.println("???????????????");
             e.printStackTrace();
         } finally {
             if (con != null) {

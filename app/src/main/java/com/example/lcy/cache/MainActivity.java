@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 fileUtils.deleteFile();
-                Toast.makeText(getApplication(), "清空缓存成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "清空缓存成功!", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
